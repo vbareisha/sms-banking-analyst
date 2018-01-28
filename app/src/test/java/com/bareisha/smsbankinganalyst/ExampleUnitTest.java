@@ -1,4 +1,4 @@
-package com.bareisha.sms_banking_analyst;
+package com.bareisha.smsbankinganalyst;
 
 import org.junit.Test;
 

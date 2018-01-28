@@ -1,4 +1,4 @@
-package com.bareisha.sms_banking_analyst;
+package com.bareisha.smsbankinganalyst;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
