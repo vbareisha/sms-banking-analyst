@@ -16,6 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.bareisha.smsbankinganalyst.SmsListActivity"
+            android:label="@string/sms_list_label"/>
         <provider
             android:authorities="com.bareisha.smsbankinganalyst"
             android:name="com.bareisha.smsbankinganalyst.repository.SmsContentProvider"

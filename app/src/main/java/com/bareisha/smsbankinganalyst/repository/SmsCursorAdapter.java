@@ -1,4 +1,4 @@
-package com.bareisha.smsbankinganalyst.service.adapter;
+package com.bareisha.smsbankinganalyst.repository;
 
 import android.content.Context;
 import android.database.Cursor;
