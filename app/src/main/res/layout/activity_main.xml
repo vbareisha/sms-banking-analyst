@@ -17,6 +17,13 @@
 
     <!--Amount of account-->
     <TextView
+        android:id="@+id/account"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin" />
+
+    <TextView
         android:id="@+id/label_amount"
         style="@style/TextAppearance.AppCompat.Large"
         android:layout_width="wrap_content"
@@ -31,6 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:text="0 BYN"
         tools:text="0 BYN" />
 
     <View
