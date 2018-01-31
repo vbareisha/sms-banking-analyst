@@ -2,4 +2,5 @@
     <string name="app_name">sms-banking-analyst</string>
     <string name="open_sms_list">Open sms list</string>
     <string name="sms_list_label">Operation list</string>
+    <string name="amount_label">Amount of your account:</string>
 </resources>
