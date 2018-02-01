@@ -10,4 +10,7 @@
     <string name="card_number_default">*</string>
     <string name="card_number_key" translatable="false">card_number</string>
     <string name="card_number_label">Card number</string>
+
+    <!--Const values-->
+    <string name="sms_body">sms_body</string>
 </resources>
