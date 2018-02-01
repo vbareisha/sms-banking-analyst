@@ -4,7 +4,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
-import com.bareisha.smsbankinganalyst.R;
 import com.bareisha.smsbankinganalyst.service.api.ISmsLoadingService;
 
 /**
