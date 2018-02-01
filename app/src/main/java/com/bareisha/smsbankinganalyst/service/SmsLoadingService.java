@@ -23,7 +23,6 @@ public class SmsLoadingService extends IntentService implements ISmsLoadingServi
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        System.out.println(intent.getStringExtra("sms_body"));
-        System.out.println("handle");
+        if (intent != null) loadSms(intent.getStringExtra("sms_body"));
     }
 }
