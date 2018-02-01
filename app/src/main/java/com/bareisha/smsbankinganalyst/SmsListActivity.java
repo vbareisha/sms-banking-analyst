@@ -39,24 +39,6 @@ public class SmsListActivity extends AppCompatActivity implements LoaderManager.
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new SmsCursorAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
-
-        //todo temp insert into db
-        ContentValues contentValues = new ContentValues();
-        // Put the task description and selected mPriority into the ContentValues
-        contentValues.put(SmsContract.SmsEntry.COLUMN_CONSUMPTION, "T");
-        contentValues.put(SmsContract.SmsEntry.COLUMN_CURRENCYTYPE, "BYN");
-        Date t = new Date();
-        contentValues.put(SmsContract.SmsEntry.COLUMN_DATETIME, t.toString());
-        contentValues.put(SmsContract.SmsEntry.COLUMN_OPERATION, "123");
-        contentValues.put(SmsContract.SmsEntry.COLUMN_OPERATIONCURRENCY, "123");
-        contentValues.put(SmsContract.SmsEntry.COLUMN_ORIGINALTEXT, "123");
-        contentValues.put(SmsContract.SmsEntry.COLUMN_REST, 0);
-
-        // Insert the content values via a ContentResolver
-        Uri uri = getContentResolver().insert(SmsContract.SmsEntry.CONTENT_URI, contentValues);
-        System.out.println(uri);
-        //
-
         getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, this);
     }
 
