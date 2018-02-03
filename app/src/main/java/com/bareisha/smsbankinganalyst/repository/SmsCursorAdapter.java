@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bareisha.smsbankinganalyst.R;
 import com.bareisha.smsbankinganalyst.model.contract.SmsContract;
+import com.bareisha.smsbankinganalyst.service.api.IItemOnClickHandler;
 
 /**
  * Created by Vova on 28.01.2018.
@@ -19,9 +20,11 @@ public class SmsCursorAdapter extends RecyclerView.Adapter<SmsCursorAdapter.SmsV
 
     private Context context;
     private Cursor cursor;
+    private final IItemOnClickHandler onClickHandler;
 
-    public SmsCursorAdapter(Context context) {
+    public SmsCursorAdapter(Context context, IItemOnClickHandler onClickHandler) {
         this.context = context;
+        this.onClickHandler = onClickHandler;
     }
 
     @Override
@@ -34,14 +37,14 @@ public class SmsCursorAdapter extends RecyclerView.Adapter<SmsCursorAdapter.SmsV
     @Override
     public void onBindViewHolder(SmsViewHolder holder, int position) {
         int idIndex = cursor.getColumnIndex(SmsContract.SmsEntry._ID);
-        int originalTextIndex = cursor.getColumnIndex(SmsContract.SmsEntry.COLUMN_ORIGINALTEXT);
+        int operationIndex = cursor.getColumnIndex(SmsContract.SmsEntry.COLUMN_OPERATION);
 
         cursor.moveToPosition(position);
         final int id = cursor.getInt(idIndex);
-        String originalText = cursor.getString(originalTextIndex);
+        String operation = cursor.getString(operationIndex);
 
         holder.itemView.setTag(id);
-        holder.taskDescriptionView.setText(originalText);
+        holder.operation.setText(operation);
     }
 
     @Override
@@ -68,10 +71,10 @@ public class SmsCursorAdapter extends RecyclerView.Adapter<SmsCursorAdapter.SmsV
     }
 
 
-    class SmsViewHolder extends RecyclerView.ViewHolder {
+    class SmsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // Class variables for the task description and priority TextViews
-        TextView taskDescriptionView;
+        TextView operation;
 
         /**
          * Constructor for the TaskViewHolders.
@@ -81,7 +84,15 @@ public class SmsCursorAdapter extends RecyclerView.Adapter<SmsCursorAdapter.SmsV
         public SmsViewHolder(View itemView) {
             super(itemView);
 
-            taskDescriptionView = itemView.findViewById(R.id.smsDescription);
+            operation = itemView.findViewById(R.id.operation);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int adapterPosition = getAdapterPosition();
+            cursor.moveToPosition(adapterPosition);
+            long id = cursor.getLong(cursor.getColumnIndex(SmsContract.SmsEntry._ID));
+            onClickHandler.onClick(id);
         }
     }
 

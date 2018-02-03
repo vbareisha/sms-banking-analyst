@@ -17,11 +17,18 @@
         android:paddingRight="@dimen/activity_horizontal_margin">
 
         <TextView
-            android:id="@+id/smsDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@android:color/primary_text_light"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:text="@string/operation_label"/>
+        <TextView
+            android:id="@+id/operation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/primary_text_light"
             style="@style/TextAppearance.AppCompat.Medium" />
+
     </LinearLayout>
     <View
         android:layout_width="match_parent"

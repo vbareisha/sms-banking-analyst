@@ -1,8 +1,6 @@
 package com.bareisha.smsbankinganalyst;
 
-import android.content.ContentValues;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -14,14 +12,13 @@ import android.util.Log;
 
 import com.bareisha.smsbankinganalyst.model.contract.SmsContract;
 import com.bareisha.smsbankinganalyst.repository.SmsCursorAdapter;
-
-import java.util.Date;
+import com.bareisha.smsbankinganalyst.service.api.IItemOnClickHandler;
 
 /**
  * Created by Vova on 29.01.2018.
  */
 
-public class SmsListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class SmsListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, IItemOnClickHandler {
 
     // Member variables for the adapter and RecyclerView
     //private CustomCursorAdapter mAdapter;
@@ -37,7 +34,7 @@ public class SmsListActivity extends AppCompatActivity implements LoaderManager.
 
         mRecyclerView = findViewById(R.id.recyclerViewSms);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new SmsCursorAdapter(this);
+        mAdapter = new SmsCursorAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
         getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, this);
     }
@@ -96,5 +93,10 @@ public class SmsListActivity extends AppCompatActivity implements LoaderManager.
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onClick(Long id) {
+        System.out.println("onClick");
     }
 }

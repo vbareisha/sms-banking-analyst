@@ -13,4 +13,7 @@
 
     <!--Const values-->
     <string name="sms_body">sms_body</string>
+
+    <!--Detail sms labels-->
+    <string name="operation_label">Operation:</string>
 </resources>
