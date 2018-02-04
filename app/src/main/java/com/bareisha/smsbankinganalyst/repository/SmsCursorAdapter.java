@@ -85,6 +85,8 @@ public class SmsCursorAdapter extends RecyclerView.Adapter<SmsCursorAdapter.SmsV
             super(itemView);
 
             operation = itemView.findViewById(R.id.operation);
+
+            itemView.setOnClickListener(this);
         }
 
         @Override

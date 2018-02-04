@@ -16,4 +16,7 @@
 
     <!--Detail sms labels-->
     <string name="operation_label">Operation:</string>
+
+    <!--Sms detail activity-->
+    <string name="sms_detail_activity_label">Details</string>
 </resources>

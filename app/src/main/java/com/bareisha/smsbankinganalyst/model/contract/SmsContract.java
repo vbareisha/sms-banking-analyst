@@ -35,5 +35,11 @@ public class SmsContract {
         public static final String COLUMN_OPERATIONCURRENCY = "operation_currency";
         public static final String COLUMN_OPERATION = "operation";
         public static final String COLUMN_ORIGINALTEXT = "original_text";
+
+        public static Uri buildSmsUriWithId(long id) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(Long.toString(id))
+                    .build();
+        }
     }
 }

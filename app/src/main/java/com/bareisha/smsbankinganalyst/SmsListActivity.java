@@ -1,6 +1,8 @@
 package com.bareisha.smsbankinganalyst;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -97,6 +99,9 @@ public class SmsListActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onClick(Long id) {
-        System.out.println("onClick");
+        Intent smsDetail = new Intent(SmsListActivity.this, SmsDetailActivity.class);
+        Uri smsId = SmsContract.SmsEntry.buildSmsUriWithId(id);
+        smsDetail.setData(smsId);
+        startActivity(smsDetail);
     }
 }

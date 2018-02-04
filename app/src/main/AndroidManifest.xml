@@ -18,6 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".SettingsActivity"
             android:label="@string/label_settings"
@@ -26,9 +27,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
+
         <activity
             android:name="com.bareisha.smsbankinganalyst.SmsListActivity"
             android:label="@string/sms_list_label"/>
+
+        <activity
+            android:name=".SmsDetailActivity"
+            android:label="@string/sms_detail_activity_label"
+            android:parentActivityName=".SmsListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SmsListActivity"/>
+        </activity>
+
         <provider
             android:authorities="com.bareisha.smsbankinganalyst"
             android:name="com.bareisha.smsbankinganalyst.repository.SmsContentProvider"
