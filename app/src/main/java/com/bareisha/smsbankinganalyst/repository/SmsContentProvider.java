@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 
 import com.bareisha.smsbankinganalyst.model.contract.SmsContract;
 
+import static android.provider.BaseColumns._ID;
 import static com.bareisha.smsbankinganalyst.model.contract.SmsContract.SmsEntry.TABLE_NAME;
 
 /**
@@ -68,6 +69,18 @@ public class SmsContentProvider extends ContentProvider {
                         strings,
                         s,
                         strings1,
+                        null,
+                        null,
+                        s1);
+                break;
+            }
+            case SMS_WITH_ID: {
+                String id = uri.getLastPathSegment();
+                String[] selectionArguments = new String[]{id};
+                retCursor = db.query(TABLE_NAME,
+                        strings,
+                        _ID + " = ?",
+                        selectionArguments,
                         null,
                         null,
                         s1);
