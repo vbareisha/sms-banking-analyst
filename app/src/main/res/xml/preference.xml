@@ -4,4 +4,11 @@
         android:defaultValue="@string/card_number_default"
         android:key="@string/card_number_key"
         android:title="@string/card_number_label" />
+
+    <CheckBoxPreference
+        android:defaultValue="@bool/pref_delete_sms_default"
+        android:key="@string/pref_delete_sms_key"
+        android:summaryOff="@string/pref_delete_false"
+        android:summaryOn="@string/pref_delete_true"
+        android:title="@string/pref_delete_sms_label" />
 </PreferenceScreen>

@@ -3,6 +3,9 @@ package com.bareisha.smsbankinganalyst.service.monitor;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.support.v7.preference.PreferenceManager;
 import android.telephony.SmsMessage;
 
 import com.bareisha.smsbankinganalyst.R;
@@ -35,7 +38,9 @@ public class SMSMonitor extends BroadcastReceiver {
                 smsLoadingService.setAction(ACTION);
                 smsLoadingService.putExtra(context.getString(R.string.sms_body), body);
                 context.startService(smsLoadingService);
-                abortBroadcast();
+
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                if (sharedPreferences.getBoolean(Resources.getSystem().getString(R.string.pref_delete_sms_key), false)) abortBroadcast();
             }
         }
     }

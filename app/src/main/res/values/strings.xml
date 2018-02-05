@@ -19,4 +19,10 @@
 
     <!--Sms detail activity-->
     <string name="sms_detail_activity_label">Details</string>
+
+    <!--Preferences-->
+    <string name="pref_delete_sms_key" translatable="false">delete_sms</string>
+    <string name="pref_delete_sms_label">Delete sms</string>
+    <string name="pref_delete_true">Delete</string>
+    <string name="pref_delete_false">Not delete</string>
 </resources>
