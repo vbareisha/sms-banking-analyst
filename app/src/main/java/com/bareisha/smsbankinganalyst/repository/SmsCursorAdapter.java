@@ -2,6 +2,7 @@ package com.bareisha.smsbankinganalyst.repository;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.bareisha.smsbankinganalyst.R;
 import com.bareisha.smsbankinganalyst.model.contract.SmsContract;
 import com.bareisha.smsbankinganalyst.service.api.IItemOnClickHandler;
+import com.vbareisha.parser.core.enums.Operation;
 
 /**
  * Created by Vova on 28.01.2018.
@@ -44,6 +46,22 @@ public class SmsCursorAdapter extends RecyclerView.Adapter<SmsCursorAdapter.SmsV
         String operation = cursor.getString(operationIndex);
 
         holder.itemView.setTag(id);
+        switch (Operation.valueOf(operation)) {
+            case PAY: {}
+            case DENIED: {}
+            case WRITEOFF: {}
+            case DENIED_PAY: {}
+            case ADMISSION: {
+                holder.itemView.setBackgroundColor(Color.parseColor("#ff6f60"));
+                break;
+            }
+            case GET_CASH: {
+                holder.itemView.setBackgroundColor(Color.parseColor("#9cff57"));
+            }
+            default: {
+
+            }
+        }
         holder.operation.setText(operation);
     }
 

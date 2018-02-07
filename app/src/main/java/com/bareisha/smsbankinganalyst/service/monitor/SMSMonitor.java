@@ -34,13 +34,17 @@ public class SMSMonitor extends BroadcastReceiver {
                     bodyText.append(messages[i].getMessageBody());
                 }
                 String body = bodyText.toString();
-                Intent smsLoadingService = new Intent(context, SmsLoadingService.class);
-                smsLoadingService.setAction(ACTION);
-                smsLoadingService.putExtra(context.getString(R.string.sms_body), body);
-                context.startService(smsLoadingService);
-
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                if (sharedPreferences.getBoolean(Resources.getSystem().getString(R.string.pref_delete_sms_key), false)) abortBroadcast();
+                String account = sharedPreferences.getString(Resources.getSystem().getString(R.string.card_number_key), Resources.getSystem().getString(R.string.card_number_default));
+                if (body.indexOf(account) > 0) {
+                    Intent smsLoadingService = new Intent(context, SmsLoadingService.class);
+                    smsLoadingService.setAction(ACTION);
+                    smsLoadingService.putExtra(context.getString(R.string.sms_body), body);
+
+                    context.startService(smsLoadingService);
+
+                    if (sharedPreferences.getBoolean(Resources.getSystem().getString(R.string.pref_delete_sms_key), false)) abortBroadcast();
+                }
             }
         }
     }
