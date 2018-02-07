@@ -41,7 +41,6 @@ public class SmsLoadingService extends IntentService implements ISmsLoadingServi
         contentValues.put(SmsContract.SmsEntry.COLUMN_REST, sms.getRest().doubleValue());
         // Insert the content values via a ContentResolver
         Uri uri = getContentResolver().insert(SmsContract.SmsEntry.CONTENT_URI, contentValues);
-        System.out.println(uri);
     }
 
     @Override

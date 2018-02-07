@@ -2,6 +2,7 @@ package com.bareisha.smsbankinganalyst;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
@@ -11,11 +12,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bareisha.smsbankinganalyst.model.contract.SmsContract;
+import com.vbareisha.parser.core.enums.CurrencyType;
+
 import static android.content.SharedPreferences.*;
 
 public class MainActivity extends AppCompatActivity implements OnSharedPreferenceChangeListener {
 
     private TextView account;
+    private TextView amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +35,9 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
             }
         });
         account = findViewById(R.id.account);
+        amount = findViewById(R.id.amount);
         setupSharedPreferences();
+        updateAmount();
    }
 
     private void setupSharedPreferences() {
@@ -69,5 +76,29 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
         // Unregister VisualizerActivity as an OnPreferenceChangedListener to avoid any memory leaks.
         PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateAmount();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        updateAmount();
+    }
+
+    private void updateAmount() {
+        Cursor cursor = getContentResolver().query(SmsContract.SmsEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                SmsContract.SmsEntry._ID);
+        if (cursor != null) {
+            cursor.moveToLast();
+            amount.setText(cursor.getString(cursor.getColumnIndex(SmsContract.SmsEntry.COLUMN_REST)) + " " + CurrencyType.BYN.name());
+        }
     }
 }
