@@ -47,16 +47,19 @@ public class SmsCursorAdapter extends RecyclerView.Adapter<SmsCursorAdapter.SmsV
 
         holder.itemView.setTag(id);
         switch (Operation.valueOf(operation)) {
-            case PAY: {}
-            case DENIED: {}
-            case WRITEOFF: {}
             case DENIED_PAY: {}
+            case DENIED: {
+                holder.itemView.setBackgroundColor(Color.parseColor("#fff59d"));
+                break;
+            }
+            case PAY: {}
+            case WRITEOFF: {}
             case ADMISSION: {
-                holder.itemView.setBackgroundColor(Color.parseColor("#ff6f60"));
+                holder.itemView.setBackgroundColor(Color.parseColor("#ffab91"));
                 break;
             }
             case GET_CASH: {
-                holder.itemView.setBackgroundColor(Color.parseColor("#9cff57"));
+                holder.itemView.setBackgroundColor(Color.parseColor("#c5e1a5"));
             }
             default: {
 
