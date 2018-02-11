@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Аналитик смс-рассылки</string>
-    <string name="open_sms_list">Открыть список смс</string>
-    <string name="sms_list_label">Список смс</string>
+    <string name="open_sms_list">Открыть список операций</string>
+    <string name="sms_list_label">Список операций</string>
     <string name="amount_label">Остаток на счете:</string>
 
     <string name="action_settings">Настройки</string>
