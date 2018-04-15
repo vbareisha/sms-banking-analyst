@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                 null,
                 null,
                 SmsContract.SmsEntry._ID);
-        if (cursor != null&& cursor.isFirst()) {
+        if (cursor != null && cursor.isFirst()) {
             cursor.moveToLast();
             amount.setText(cursor.getString(cursor.getColumnIndex(SmsContract.SmsEntry.COLUMN_REST)) + " " + CurrencyType.BYN.name());
         }

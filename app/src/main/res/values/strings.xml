@@ -9,7 +9,11 @@
 
     <string name="card_number_default">*</string>
     <string name="card_number_key" translatable="false">card_number</string>
-    <string name="card_number_label">Номер счета</string>
+    <string name="card_number_label">Номер карты</string>
+
+    <string name="account_number_key" translatable="false">account_number</string>
+    <string name="account_number_default">*</string>
+    <string name="account_number_label">Номер счета</string>
 
     <!--Const values-->
     <string name="sms_body">sms_body</string>

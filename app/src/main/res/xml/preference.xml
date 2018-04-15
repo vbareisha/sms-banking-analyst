@@ -5,6 +5,11 @@
         android:key="@string/card_number_key"
         android:title="@string/card_number_label" />
 
+    <EditTextPreference
+        android:defaultValue="@string/account_number_default"
+        android:key="@string/account_number_key"
+        android:title="@string/account_number_label" />
+
     <CheckBoxPreference
         android:defaultValue="@bool/pref_delete_sms_default"
         android:key="@string/pref_delete_sms_key"
