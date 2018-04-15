@@ -39,7 +39,7 @@ public class SMSMonitor extends BroadcastReceiver {
                 String account = sharedPreferences.getString(context.getString(R.string.account_number_key), context.getString(R.string.account_number_default));
                 String cardNumber = sharedPreferences.getString(context.getString(R.string.card_number_key), context.getString(R.string.card_number_default));
 
-                if (body.indexOf(account) > 0 || body.indexOf(cardNumber) > 0) {
+                if (body.indexOf(account) > 0 || body.indexOf(cardNumber) > 0 || account.equals(context.getString(R.string.account_number_default))) {
                     Intent smsLoadingService = new Intent(context, SmsLoadingService.class);
                     smsLoadingService.setAction(ACTION);
                     smsLoadingService.putExtra(context.getString(R.string.sms_body), body);
