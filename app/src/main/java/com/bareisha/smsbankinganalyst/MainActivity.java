@@ -3,6 +3,9 @@ package com.bareisha.smsbankinganalyst;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
@@ -17,8 +20,10 @@ import com.vbareisha.parser.core.enums.CurrencyType;
 
 import static android.content.SharedPreferences.*;
 
-public class MainActivity extends AppCompatActivity implements OnSharedPreferenceChangeListener {
+public class MainActivity extends AppCompatActivity implements OnSharedPreferenceChangeListener,
+        LoaderManager.LoaderCallbacks<Cursor>{
 
+    private static final int ID_MAIN_LOADER = 354;
     private TextView account;
     private TextView amount;
 
@@ -37,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
         account = findViewById(R.id.account);
         amount = findViewById(R.id.amount);
         setupSharedPreferences();
-        updateAmount();
+        getSupportLoaderManager().initLoader(ID_MAIN_LOADER, null, this);
    }
 
     private void setupSharedPreferences() {
@@ -81,24 +86,39 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
     @Override
     protected void onResume() {
         super.onResume();
-        updateAmount();
+        getSupportLoaderManager().initLoader(ID_MAIN_LOADER, null, null);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        updateAmount();
+        getSupportLoaderManager().initLoader(ID_MAIN_LOADER, null, null);
     }
 
-    private void updateAmount() {
-        Cursor cursor = getContentResolver().query(SmsContract.SmsEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                SmsContract.SmsEntry._ID);
-        if (cursor != null && cursor.isFirst()) {
-            cursor.moveToLast();
-            amount.setText(cursor.getString(cursor.getColumnIndex(SmsContract.SmsEntry.COLUMN_REST)) + " " + CurrencyType.BYN.name());
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case ID_MAIN_LOADER: {
+                return new CursorLoader(
+                        this,
+                        SmsContract.SmsEntry.CONTENT_URI,
+                        null,
+                        null,
+                        null,
+                        SmsContract.SmsEntry._ID);
+            }
+            default: throw new RuntimeException("Loader Not Implemented: " + id);
         }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        String info = String.format("%s %s", data.getString(data.getColumnIndex(SmsContract.SmsEntry.COLUMN_REST)), CurrencyType.BYN.name());
+        amount.setText(info);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        //stub
     }
 }
