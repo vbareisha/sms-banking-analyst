@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
+import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,9 +24,10 @@ import static android.content.SharedPreferences.*;
 public class MainActivity extends AppCompatActivity implements OnSharedPreferenceChangeListener,
         LoaderManager.LoaderCallbacks<Cursor>{
 
-    private static final int ID_MAIN_LOADER = 354;
+    private static final int ID_MAIN_LOADER = 111;
     private TextView account;
     private TextView amount;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,33 +88,68 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
     @Override
     protected void onResume() {
         super.onResume();
-        getSupportLoaderManager().initLoader(ID_MAIN_LOADER, null, null);
+        getSupportLoaderManager().initLoader(ID_MAIN_LOADER, null, this);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        getSupportLoaderManager().initLoader(ID_MAIN_LOADER, null, null);
+        getSupportLoaderManager().initLoader(ID_MAIN_LOADER, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case ID_MAIN_LOADER: {
-                return new CursorLoader(
-                        this,
-                        SmsContract.SmsEntry.CONTENT_URI,
-                        null,
-                        null,
-                        null,
-                        SmsContract.SmsEntry._ID);
+        return new AsyncTaskLoader<Cursor>(this) {
+
+            Cursor mTaskData = null;
+
+            @Override
+            protected void onStartLoading() {
+                if (mTaskData != null) {
+                    // Delivers any previously loaded data immediately
+                    deliverResult(mTaskData);
+                } else {
+                    // Force a new load
+                    forceLoad();
+                }
             }
-            default: throw new RuntimeException("Loader Not Implemented: " + id);
-        }
+
+            @Override
+            public Cursor loadInBackground() {
+                try {
+                    return getContentResolver().query(SmsContract.SmsEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            SmsContract.SmsEntry._ID);
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed to asynchronously load data." + e.getMessage());
+                    System.out.println(e.getMessage());
+                    return null;
+                }
+            }
+
+            @Override
+            public void deliverResult(Cursor data) {
+                mTaskData = data;
+                super.deliverResult(data);
+            }
+        };
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        boolean cursorHasValidData = false;
+        if (data != null && data.moveToLast()) {
+            /* We have valid data, continue on to bind the data to the UI */
+            cursorHasValidData = true;
+        }
+
+        if (!cursorHasValidData) {
+            /* No data to display, simply return and do nothing */
+            return;
+        }
         String info = String.format("%s %s", data.getString(data.getColumnIndex(SmsContract.SmsEntry.COLUMN_REST)), CurrencyType.BYN.name());
         amount.setText(info);
     }

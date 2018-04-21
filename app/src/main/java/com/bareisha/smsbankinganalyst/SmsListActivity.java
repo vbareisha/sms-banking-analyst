@@ -26,7 +26,7 @@ public class SmsListActivity extends AppCompatActivity implements LoaderManager.
     //private CustomCursorAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private SmsCursorAdapter mAdapter;
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = SmsListActivity.class.getSimpleName();
     private static final int TASK_LOADER_ID = 0;
 
     @Override
