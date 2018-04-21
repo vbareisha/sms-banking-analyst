@@ -1,15 +1,16 @@
 package com.bareisha.smsbankinganalyst;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.app.NavUtils;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import com.bareisha.smsbankinganalyst.model.contract.SmsContract;
 
 public class SmsDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final String SHARE_HASHTAG = " #SmsBankingAnalyst";
     private static final int ID_DETAIL_LOADER = 353;
     private TextView mDescription;
     private Uri mUri;
@@ -73,5 +75,20 @@ public class SmsDetailActivity extends AppCompatActivity implements LoaderManage
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    private Intent createShareForecastIntent() {
+        return ShareCompat.IntentBuilder.from(this)
+                .setType("text/plain")
+                .setText(mDescription.getText() + SHARE_HASHTAG)
+                .getIntent();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.share_sms, menu);
+        MenuItem item = menu.findItem(R.id.action_share);
+        item.setIntent(createShareForecastIntent());
+        return true;
     }
 }
