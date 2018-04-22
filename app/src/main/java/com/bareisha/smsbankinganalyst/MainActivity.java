@@ -41,6 +41,13 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                 startActivity(smsListIntent);
             }
         });
+        findViewById(R.id.btnRefresh).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportLoaderManager().initLoader(ID_MAIN_LOADER, null, MainActivity.this);
+            }
+        });
+
         account = findViewById(R.id.account);
         amount = findViewById(R.id.amount);
         setupSharedPreferences();

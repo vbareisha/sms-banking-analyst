@@ -59,4 +59,15 @@
         android:tint="@android:color/white"
         app:srcCompat="@drawable/ic_filter_list_black_24dp" />
 
+    <!--Refreh button-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnRefresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="@dimen/fab_margin"
+        android:tint="@android:color/white"
+        app:srcCompat="@drawable/ic_replay_white_24px" />
+
+
 </LinearLayout>
