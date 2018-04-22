@@ -32,9 +32,7 @@ public class SmsLoadingService extends IntentService implements ISmsLoadingServi
         ContentValues contentValues = new ContentValues();
         contentValues.put(SmsContract.SmsEntry.COLUMN_CONSUMPTION, sms.getConsumption().doubleValue());
         contentValues.put(SmsContract.SmsEntry.COLUMN_CURRENCYTYPE, sms.getCurrencyType().name());
-        //todo convert locadatetime to date
-        Date t = new Date();
-        contentValues.put(SmsContract.SmsEntry.COLUMN_DATETIME, t.toString());
+        contentValues.put(SmsContract.SmsEntry.COLUMN_DATETIME, sms.getDateTime().toString());
         contentValues.put(SmsContract.SmsEntry.COLUMN_OPERATION, sms.getOperation().name());
         contentValues.put(SmsContract.SmsEntry.COLUMN_OPERATIONCURRENCY, sms.getOperationCurrency().name());
         contentValues.put(SmsContract.SmsEntry.COLUMN_ORIGINALTEXT, sms.getOriginalText());

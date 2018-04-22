@@ -31,4 +31,7 @@
     <string name="pref_delete_false">Не удалять</string>
     <string name="rest_info_default_value">0 BYN</string>
     <string name="action_share">Share</string>
+    <string name="dtTmSmsCreateLabel">Время создания: %s</string>
+    <string name="date_format_string">dd/MM/yyyy</string>
+    <string name="original_sms_label">Сообщение:</string>
 </resources>
