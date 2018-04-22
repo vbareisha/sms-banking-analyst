@@ -46,26 +46,40 @@ public class SmsCursorAdapter extends RecyclerView.Adapter<SmsCursorAdapter.SmsV
         String operation = cursor.getString(operationIndex);
 
         holder.itemView.setTag(id);
+        String operationLabel;
         switch (Operation.valueOf(operation)) {
-            case DENIED_PAY: {}
+            case DENIED_PAY: {
+                operationLabel = context.getString(R.string.denied_label);
+                break;
+            }
             case DENIED: {
+                operationLabel = context.getString(R.string.denied_label);
                 holder.itemView.setBackgroundColor(Color.parseColor("#fff59d"));
                 break;
             }
-            case PAY: {}
-            case WRITEOFF: {}
+            case PAY: {
+                operationLabel = context.getString(R.string.pay_label);
+                break;
+            }
+            case WRITEOFF: {
+                operationLabel = context.getString(R.string.writeoff_label);
+                break;
+            }
             case ADMISSION: {
+                operationLabel = context.getString(R.string.admission_label);
                 holder.itemView.setBackgroundColor(Color.parseColor("#ffab91"));
                 break;
             }
             case GET_CASH: {
+                operationLabel = context.getString(R.string.get_cash_label);
                 holder.itemView.setBackgroundColor(Color.parseColor("#c5e1a5"));
+                break;
             }
             default: {
-
+                operationLabel = context.getString(R.string.operation_not_found_label);
             }
         }
-        holder.operation.setText(operation);
+        holder.operation.setText(operationLabel);
     }
 
     @Override

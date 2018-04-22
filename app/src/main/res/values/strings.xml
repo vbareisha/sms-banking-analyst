@@ -34,4 +34,11 @@
     <string name="dtTmSmsCreateLabel">Время создания: %s</string>
     <string name="date_format_string">dd/MM/yyyy</string>
     <string name="original_sms_label">Сообщение:</string>
+    <string name="pay_label">Оплата.</string>
+    <string name="denied_pay_label">Отказано в оплате.</string>
+    <string name="denied_label">Отказано в снятии наличных.</string>
+    <string name="writeoff_label">Списание средств.</string>
+    <string name="admission_label">Поступление на карту.</string>
+    <string name="get_cash_label">Снятие наличных.</string>
+    <string name="operation_not_found_label">Operation not found!</string>
 </resources>
