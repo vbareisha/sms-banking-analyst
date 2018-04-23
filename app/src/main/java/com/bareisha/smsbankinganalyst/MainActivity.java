@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
         findViewById(R.id.btnRefresh).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportLoaderManager().initLoader(ID_MAIN_LOADER, null, MainActivity.this);
+                getSupportLoaderManager().restartLoader(ID_MAIN_LOADER, null, MainActivity.this);
             }
         });
 
@@ -95,30 +95,23 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
     @Override
     protected void onResume() {
         super.onResume();
-        getSupportLoaderManager().initLoader(ID_MAIN_LOADER, null, this);
+        getSupportLoaderManager().restartLoader(ID_MAIN_LOADER, null, this);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        getSupportLoaderManager().initLoader(ID_MAIN_LOADER, null, this);
+        getSupportLoaderManager().restartLoader(ID_MAIN_LOADER, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new AsyncTaskLoader<Cursor>(this) {
 
-            Cursor mTaskData = null;
-
             @Override
             protected void onStartLoading() {
-                if (mTaskData != null) {
-                    // Delivers any previously loaded data immediately
-                    deliverResult(mTaskData);
-                } else {
-                    // Force a new load
-                    forceLoad();
-                }
+                // Force a new load
+                forceLoad();
             }
 
             @Override
@@ -139,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
 
             @Override
             public void deliverResult(Cursor data) {
-                mTaskData = data;
                 super.deliverResult(data);
             }
         };
