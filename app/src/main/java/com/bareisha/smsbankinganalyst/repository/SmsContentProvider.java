@@ -24,6 +24,7 @@ public class SmsContentProvider extends ContentProvider {
 
     public static final int SMS_LIST = 100;
     public static final int SMS_WITH_ID = 101;
+    public static final int SMS_MAX_ID = 102;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -45,7 +46,7 @@ public class SmsContentProvider extends ContentProvider {
          */
         uriMatcher.addURI(SmsContract.AUTHORITY, SmsContract.PATH_TASKS, SMS_LIST);
         uriMatcher.addURI(SmsContract.AUTHORITY, SmsContract.PATH_TASKS + "/#", SMS_WITH_ID);
-
+        uriMatcher.addURI(SmsContract.AUTHORITY, SmsContract.PATH_TASKS + "/max_id", SMS_MAX_ID);
         return uriMatcher;
     }
 
@@ -62,10 +63,10 @@ public class SmsContentProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
         final SQLiteDatabase db = mSmsDbHelper.getReadableDatabase();
         int match = sUriMatcher.match(uri);
-        Cursor retCursor;
+        Cursor refCursor;
         switch (match) {
             case SMS_LIST: {
-                retCursor = db.query(TABLE_NAME,
+                refCursor = db.query(TABLE_NAME,
                         strings,
                         s,
                         strings1,
@@ -77,7 +78,7 @@ public class SmsContentProvider extends ContentProvider {
             case SMS_WITH_ID: {
                 String id = uri.getLastPathSegment();
                 String[] selectionArguments = new String[]{id};
-                retCursor = db.query(TABLE_NAME,
+                refCursor = db.query(TABLE_NAME,
                         strings,
                         _ID + " = ?",
                         selectionArguments,
@@ -86,11 +87,15 @@ public class SmsContentProvider extends ContentProvider {
                         s1);
                 break;
             }
+            case SMS_MAX_ID: {
+                refCursor = db.rawQuery("SELECT max(_ID) as maxId FROM sms", strings1);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        return retCursor;
+        return refCursor;
     }
 
 

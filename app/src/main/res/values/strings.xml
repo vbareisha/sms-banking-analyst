@@ -41,4 +41,6 @@
     <string name="admission_label">Поступление на карту.</string>
     <string name="get_cash_label">Снятие наличных.</string>
     <string name="operation_not_found_label">Operation not found!</string>
+    <string name="permison_read_sms_title">Получение доступе к смс.</string>
+    <string name="premission_read_sms_text">Необходимо получить доступ к смс, которые Вы получаете от банка.</string>
 </resources>

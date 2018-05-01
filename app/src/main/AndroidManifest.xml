@@ -3,7 +3,7 @@
     package="com.bareisha.smsbankinganalyst">
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-
+    <uses-permission android:name="android.permission.READ_SMS" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -47,8 +47,10 @@
             android:exported="false"/>
 
         <receiver
-            android:name=".service.monitor.SMSMonitor">
-            <intent-filter android:priority="100">
+            android:name="com.bareisha.smsbankinganalyst.service.monitor.SMSMonitor"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter android:priority="1">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
             </intent-filter>
         </receiver>
