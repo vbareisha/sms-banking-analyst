@@ -43,4 +43,5 @@
     <string name="operation_not_found_label">Operation not found!</string>
     <string name="permison_read_sms_title">Получение доступе к смс.</string>
     <string name="premission_read_sms_text">Необходимо получить доступ к смс, которые Вы получаете от банка.</string>
+    <string name="person_who_send_sms">+123</string>
 </resources>

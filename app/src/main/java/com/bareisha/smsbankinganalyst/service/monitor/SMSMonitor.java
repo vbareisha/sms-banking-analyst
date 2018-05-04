@@ -28,7 +28,7 @@ public class SMSMonitor extends BroadcastReceiver {
                 messages[i] = SmsMessage.createFromPdu((byte[]) pduArray[i]);
             }
             String sms_from = messages[0].getDisplayOriginatingAddress();
-            if (sms_from.equalsIgnoreCase("MTBANK")) {
+            if (sms_from.equalsIgnoreCase(context.getString(R.string.person_who_send_sms))) {
                 StringBuilder bodyText = new StringBuilder();
                 for (int i = 0; i < messages.length; i++) {
                     bodyText.append(messages[i].getMessageBody());

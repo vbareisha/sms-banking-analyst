@@ -1,6 +1,7 @@
 package com.bareisha.smsbankinganalyst;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -120,35 +121,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new AsyncTaskLoader<Cursor>(this) {
-
-            @Override
-            protected void onStartLoading() {
-                // Force a new load
-                forceLoad();
-            }
-
-            @Override
-            public Cursor loadInBackground() {
-                try {
-                    return getContentResolver().query(SmsContract.SmsEntry.CONTENT_URI,
-                            null,
-                            null,
-                            null,
-                            SmsContract.SmsEntry._ID);
-
-                } catch (Exception e) {
-                    Log.e(TAG, "Failed to asynchronously load data." + e.getMessage());
-                    System.out.println(e.getMessage());
-                    return null;
-                }
-            }
-
-            @Override
-            public void deliverResult(Cursor data) {
-                super.deliverResult(data);
-            }
-        };
+        return loaderFactory(this);
     }
 
     @Override
@@ -209,4 +182,35 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
         builder.show();
     }
 
+    private static Loader<Cursor> loaderFactory(final Context context) {
+        return new AsyncTaskLoader<Cursor>(context) {
+
+            @Override
+            protected void onStartLoading() {
+                // Force a new load
+                forceLoad();
+            }
+
+            @Override
+            public Cursor loadInBackground() {
+                try {
+                    return context.getContentResolver().query(SmsContract.SmsEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            SmsContract.SmsEntry._ID);
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed to asynchronously load data." + e.getMessage());
+                    System.out.println(e.getMessage());
+                    return null;
+                }
+            }
+
+            @Override
+            public void deliverResult(Cursor data) {
+                super.deliverResult(data);
+            }
+        };
+    }
 }
