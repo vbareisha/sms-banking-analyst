@@ -32,6 +32,7 @@ public class SmsDbHelper extends SQLiteOpenHelper {
                                     SmsEntry.COLUMN_CURRENCYTYPE + " TEXT NOT NULL, " +
                                     SmsEntry.COLUMN_OPERATIONCURRENCY + " TEXT NOT NULL, " +
                                     SmsEntry.COLUMN_OPERATION + " TEXT NOT NULL, " +
+                                    SmsEntry.COLUMN_SMS_ID_APP + " INTEGER NOT NULL, " +
                                     SmsEntry.COLUMN_ORIGINALTEXT + " TEXT NOT NULL);";
         sqLiteDatabase.execSQL(CREATE_TABLE);
     }

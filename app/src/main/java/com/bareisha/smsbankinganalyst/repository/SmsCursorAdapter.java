@@ -75,6 +75,11 @@ public class SmsCursorAdapter extends RecyclerView.Adapter<SmsCursorAdapter.SmsV
                 holder.itemView.setBackgroundColor(Color.parseColor("#c5e1a5"));
                 break;
             }
+            case CANCEL: {
+                operationLabel = context.getString(R.string.cancel_label);
+                holder.itemView.setBackgroundColor(Color.parseColor("#c5e1a5"));
+                break;
+            }
             default: {
                 operationLabel = context.getString(R.string.operation_not_found_label);
             }

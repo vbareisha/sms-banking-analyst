@@ -30,8 +30,8 @@ public class SMSMonitor extends BroadcastReceiver {
             String sms_from = messages[0].getDisplayOriginatingAddress();
             if (sms_from.equalsIgnoreCase(context.getString(R.string.person_who_send_sms))) {
                 StringBuilder bodyText = new StringBuilder();
-                for (int i = 0; i < messages.length; i++) {
-                    bodyText.append(messages[i].getMessageBody());
+                for (SmsMessage message : messages) {
+                    bodyText.append(message.getMessageBody());
                 }
                 String body = bodyText.toString();
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -43,6 +43,8 @@ public class SMSMonitor extends BroadcastReceiver {
                     Intent smsLoadingService = new Intent(context, SmsLoadingService.class);
                     smsLoadingService.setAction(ACTION);
                     smsLoadingService.putExtra(context.getString(R.string.sms_body), body);
+                    //todo здесь придумать передачу идентификатора
+                    smsLoadingService.putExtra(context.getString(R.string.sms_id_app), 0);
 
                     context.startService(smsLoadingService);
 

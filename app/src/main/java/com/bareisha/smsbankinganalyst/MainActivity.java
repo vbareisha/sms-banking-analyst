@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.bareisha.smsbankinganalyst.loader.SmsScanerFromDevice;
 import com.bareisha.smsbankinganalyst.model.contract.SmsContract;
+import com.bareisha.smsbankinganalyst.service.SmsLoadingService;
 import com.vbareisha.parser.core.enums.CurrencyType;
 
 import static android.content.SharedPreferences.*;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
             @Override
             public void onClick(View view) {
                 // check permissions for reading sms
+                //todo опять права  - нарисовать нормальное окно с правами!!!!
                 if (!(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED)) {
                     showRequestPermissionsInfoDialogForReadingSms();
                 }
