@@ -36,10 +36,14 @@ public class SmsScanerFromDevice implements LoaderManager.LoaderCallbacks<Cursor
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data != null && data.getCount() > 0) {
             while (data.moveToNext()) {
-                smsLoadingService.loadSms(
-                        data.getString(data.getColumnIndex("body")),
-                        data.getInt(data.getColumnIndex("_id")),
-                        loader.getContext().getContentResolver());
+                String body = data.getString(data.getColumnIndex("body"));
+                // отсекаем ключи авторизации
+                if (body.length() > 4) {
+                    smsLoadingService.loadSms(
+                            data.getString(data.getColumnIndex("body")),
+                            data.getInt(data.getColumnIndex("_id")),
+                            loader.getContext().getContentResolver());
+                }
             }
         }
     }

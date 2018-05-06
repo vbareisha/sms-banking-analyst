@@ -33,6 +33,7 @@
     <string name="action_share">Share</string>
     <string name="dtTmSmsCreateLabel">Время создания: %s</string>
     <string name="date_format_string">dd/MM/yyyy</string>
+    <string name="date_db_format">EEE MMM dd HH:mm:ss zzz yyyy</string>
     <string name="original_sms_label">Сообщение:</string>
     <string name="pay_label">Оплата.</string>
     <string name="denied_pay_label">Отказано в оплате.</string>

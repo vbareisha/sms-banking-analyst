@@ -10,6 +10,7 @@ import android.support.v4.app.ShareCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 /**
  * Created by Vova on 04.02.2018.
@@ -75,11 +77,7 @@ public class SmsDetailActivity extends AppCompatActivity implements LoaderManage
             /* No data to display, simply return and do nothing */
             return;
         }
-        Date createDtTm = new Date(data.getString(data.getColumnIndex(SmsContract.SmsEntry.COLUMN_DATETIME)));
-        SimpleDateFormat dateFormat = new SimpleDateFormat(getString(R.string.date_format_string), Locale.getDefault());
-
-        final String dtTmText = String.format(getString(R.string.dtTmSmsCreateLabel), dateFormat.format(createDtTm));
-
+        final String dtTmText = convertDbDateToDate(data.getString(data.getColumnIndex(SmsContract.SmsEntry.COLUMN_DATETIME)));
         tvDtTmCreate.setText(dtTmText);
         mDescription.setText(data.getString(data.getColumnIndex(SmsContract.SmsEntry.COLUMN_ORIGINALTEXT)));
     }
@@ -102,5 +100,24 @@ public class SmsDetailActivity extends AppCompatActivity implements LoaderManage
         MenuItem item = menu.findItem(R.id.action_share);
         item.setIntent(createShareForecastIntent());
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "SmsDetailActivity";
+    }
+
+    private String convertDbDateToDate(String dbDate) {
+        DateFormat simple = new SimpleDateFormat(getString(R.string.date_db_format), new Locale("en"));
+        Date createDtTm;
+        try {
+            createDtTm = simple.parse(dbDate);
+        } catch (Exception e) {
+            Log.e(this.toString(), e.getMessage());
+            createDtTm = new Date();
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat(getString(R.string.date_format_string), Locale.getDefault());
+
+        return String.format(getString(R.string.dtTmSmsCreateLabel), dateFormat.format(createDtTm));
     }
 }
