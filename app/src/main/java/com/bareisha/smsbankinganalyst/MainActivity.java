@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -119,13 +121,14 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return loaderFactory(this);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         boolean cursorHasValidData = false;
         if (data != null && data.moveToLast()) {
             /* We have valid data, continue on to bind the data to the UI */
@@ -141,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         //stub
     }
 
@@ -194,15 +197,21 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
             @Override
             public Cursor loadInBackground() {
                 try {
-                    return context.getContentResolver().query(SmsContract.SmsEntry.CONTENT_URI,
+                    Uri maxIdUri = Uri.parse(SmsContract.SmsEntry.CONTENT_URI + "/max_id");
+                    Cursor maxRecord = context.getContentResolver().query(maxIdUri,
                             null,
                             null,
                             null,
                             SmsContract.SmsEntry._ID);
-
+                    if (maxRecord != null && maxRecord.move(1)) {
+                        Uri smsId = SmsContract.SmsEntry.buildSmsUriWithId(maxRecord.getInt(maxRecord.getColumnIndex("maxId")));
+                        maxRecord.close();
+                        return context.getContentResolver().query(smsId, null, null, null, null);
+                    } else {
+                        return null;
+                    }
                 } catch (Exception e) {
                     Log.e(TAG, "Failed to asynchronously load data." + e.getMessage());
-                    System.out.println(e.getMessage());
                     return null;
                 }
             }
