@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.provider.Telephony;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -26,7 +25,6 @@ import android.widget.TextView;
 
 import com.bareisha.smsbankinganalyst.loader.SmsScanerFromDevice;
 import com.bareisha.smsbankinganalyst.model.contract.SmsContract;
-import com.bareisha.smsbankinganalyst.service.SmsLoadingService;
 import com.vbareisha.parser.core.enums.CurrencyType;
 
 import static android.content.SharedPreferences.*;
