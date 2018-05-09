@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.ShareCompat;
@@ -21,7 +22,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 /**
  * Created by Vova on 04.02.2018.
@@ -48,6 +48,7 @@ public class SmsDetailActivity extends AppCompatActivity implements LoaderManage
         getSupportLoaderManager().initLoader(ID_DETAIL_LOADER, null, this);
     }
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
@@ -66,7 +67,7 @@ public class SmsDetailActivity extends AppCompatActivity implements LoaderManage
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         boolean cursorHasValidData = false;
         if (data != null && data.moveToFirst()) {
             /* We have valid data, continue on to bind the data to the UI */
@@ -83,7 +84,7 @@ public class SmsDetailActivity extends AppCompatActivity implements LoaderManage
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
     }
 

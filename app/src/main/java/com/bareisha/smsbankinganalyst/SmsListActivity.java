@@ -1,9 +1,11 @@
 package com.bareisha.smsbankinganalyst;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -22,9 +24,6 @@ import com.bareisha.smsbankinganalyst.service.api.IItemOnClickHandler;
 
 public class SmsListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, IItemOnClickHandler {
 
-    // Member variables for the adapter and RecyclerView
-    //private CustomCursorAdapter mAdapter;
-    private RecyclerView mRecyclerView;
     private SmsCursorAdapter mAdapter;
     private static final String TAG = SmsListActivity.class.getSimpleName();
     private static final int TASK_LOADER_ID = 0;
@@ -34,7 +33,7 @@ public class SmsListActivity extends AppCompatActivity implements LoaderManager.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sms_list);
 
-        mRecyclerView = findViewById(R.id.recyclerViewSms);
+        RecyclerView mRecyclerView = findViewById(R.id.recyclerViewSms);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new SmsCursorAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
@@ -47,53 +46,19 @@ public class SmsListActivity extends AppCompatActivity implements LoaderManager.
         getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
     }
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new AsyncTaskLoader<Cursor>(this) {
-
-            Cursor mTaskData = null;
-
-            @Override
-            protected void onStartLoading() {
-                if (mTaskData != null) {
-                    // Delivers any previously loaded data immediately
-                    deliverResult(mTaskData);
-                } else {
-                    // Force a new load
-                    forceLoad();
-                }
-            }
-
-            @Override
-            public Cursor loadInBackground() {
-                try {
-                    return getContentResolver().query(SmsContract.SmsEntry.CONTENT_URI,
-                            null,
-                            null,
-                            null,
-                            SmsContract.SmsEntry._ID);
-
-                } catch (Exception e) {
-                    Log.e(TAG, "Failed to asynchronously load data." + e.getMessage());
-                    return null;
-                }
-            }
-
-            @Override
-            public void deliverResult(Cursor data) {
-                mTaskData = data;
-                super.deliverResult(data);
-            }
-        };
+        return LoaderFactory.create(this);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         mAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
     }
 
@@ -103,5 +68,46 @@ public class SmsListActivity extends AppCompatActivity implements LoaderManager.
         Uri smsId = SmsContract.SmsEntry.buildSmsUriWithId(id);
         smsDetail.setData(smsId);
         startActivity(smsDetail);
+    }
+
+    private static class LoaderFactory {
+        static Loader<Cursor> create(final Context context) {
+            return new AsyncTaskLoader<Cursor>(context) {
+
+                Cursor mTaskData = null;
+
+                @Override
+                protected void onStartLoading() {
+                    if (mTaskData != null) {
+                        // Delivers any previously loaded data immediately
+                        deliverResult(mTaskData);
+                    } else {
+                        // Force a new load
+                        forceLoad();
+                    }
+                }
+
+                @Override
+                public Cursor loadInBackground() {
+                    try {
+                        return context.getContentResolver().query(SmsContract.SmsEntry.CONTENT_URI,
+                                null,
+                                null,
+                                null,
+                                SmsContract.SmsEntry._ID);
+
+                    } catch (Exception e) {
+                        Log.e(TAG, "Failed to asynchronously load data." + e.getMessage());
+                        return null;
+                    }
+                }
+
+                @Override
+                public void deliverResult(Cursor data) {
+                    mTaskData = data;
+                    super.deliverResult(data);
+                }
+            };
+        }
     }
 }

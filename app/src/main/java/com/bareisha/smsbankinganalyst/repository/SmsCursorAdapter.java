@@ -3,6 +3,7 @@ package com.bareisha.smsbankinganalyst.repository;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,15 +30,16 @@ public class SmsCursorAdapter extends RecyclerView.Adapter<SmsCursorAdapter.SmsV
         this.onClickHandler = onClickHandler;
     }
 
+    @NonNull
     @Override
-    public SmsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SmsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.sms_layout, parent, false);
         return new SmsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(SmsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SmsViewHolder holder, int position) {
         int idIndex = cursor.getColumnIndex(SmsContract.SmsEntry._ID);
         int operationIndex = cursor.getColumnIndex(SmsContract.SmsEntry.COLUMN_OPERATION);
 
