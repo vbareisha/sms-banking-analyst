@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
     private static final int SMS_PERMISSION_READ = 20;
     private TextView account;
     private TextView amount;
+    private FloatingActionButton btnSync;
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -53,22 +55,25 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
                 startActivity(smsListIntent);
             }
         });
+
         findViewById(R.id.btnRefresh).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getSupportLoaderManager().restartLoader(ID_MAIN_LOADER, null, MainActivity.this);
             }
         });
-        findViewById(R.id.btnSync).setOnClickListener(new View.OnClickListener() {
+
+        btnSync = findViewById(R.id.btnSync);
+        btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // check permissions for reading sms
-                //todo опять права  - нарисовать нормальное окно с правами!!!!
                 if (!(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED)) {
                     showRequestPermissionsInfoDialogForReadingSms();
+                } else {
+                    SmsScanerFromDevice scaner = new SmsScanerFromDevice(MainActivity.this);
+                    getSupportLoaderManager().initLoader(SmsScanerFromDevice.ID_SCANER_SMS_FROM_DEVICE_LOADER, null, scaner);
                 }
-                SmsScanerFromDevice scaner = new SmsScanerFromDevice(view.getContext());
-                getSupportLoaderManager().initLoader(SmsScanerFromDevice.ID_SCANER_SMS_FROM_DEVICE_LOADER, null, scaner);
             }
         });
 
@@ -77,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
 
         setupSharedPreferences();
         getSupportLoaderManager().initLoader(ID_MAIN_LOADER, null, this);
-        //todo другое место
+
         if (!(ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED)) {
             showRequestPermissionsInfoAlertDialog();
         }
@@ -150,15 +155,15 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
 
     private void showRequestPermissionsInfoAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("title");
-        builder.setMessage("message");
+        builder.setTitle(R.string.permison_read_sms_title);
+        builder.setMessage(R.string.receive_sms_permission_label);
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 if (!(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.RECEIVE_SMS) == PackageManager.PERMISSION_GRANTED)) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.RECEIVE_SMS)) {
-                        Log.i(MainActivity.TAG, "get perm!");
+                        Log.i(MainActivity.TAG, "Getting permission for receiving sms!");
                     }
                     ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.RECEIVE_SMS}, SMS_PERMISSION_CODE);
                 }
@@ -177,12 +182,26 @@ public class MainActivity extends AppCompatActivity implements OnSharedPreferenc
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.READ_SMS)) {
-                    Log.d(MainActivity.TAG, "Getting permission for reading sms!");
+                    Log.i(MainActivity.TAG, "Getting permission for reading sms!");
                 }
                 ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.READ_SMS}, SMS_PERMISSION_READ);
             }
         });
         builder.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case SMS_PERMISSION_READ: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    SmsScanerFromDevice scaner = new SmsScanerFromDevice(this);
+                    getSupportLoaderManager().initLoader(SmsScanerFromDevice.ID_SCANER_SMS_FROM_DEVICE_LOADER, null, scaner);
+                } else {
+                    btnSync.setEnabled(false);
+                }
+            }
+        }
     }
 
     private static Loader<Cursor> loaderFactory(final Context context) {
