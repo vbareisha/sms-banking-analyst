@@ -36,20 +36,17 @@ public class SmsScanerFromDevice implements LoaderManager.LoaderCallbacks<Cursor
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         if (data != null && data.getCount() > 0) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            String account = sharedPreferences.getString(context.getString(R.string.account_number_key), context.getString(R.string.account_number_default));
+            String cardNumber = sharedPreferences.getString(context.getString(R.string.card_number_key), context.getString(R.string.card_number_default));
             while (data.moveToNext()) {
                 String body = data.getString(data.getColumnIndex("body"));
                 // отсекаем ключи авторизации
-                if (body.length() > 4) {
-                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                    String account = sharedPreferences.getString(context.getString(R.string.account_number_key), context.getString(R.string.account_number_default));
-                    String cardNumber = sharedPreferences.getString(context.getString(R.string.card_number_key), context.getString(R.string.card_number_default));
-                    if (body.indexOf(account) > 0 || body.indexOf(cardNumber) > 0 || account.equals(context.getString(R.string.account_number_default))) {
-                        smsLoadingService.loadSms(
-                                data.getString(data.getColumnIndex("body")),
-                                data.getInt(data.getColumnIndex("_id")),
-                                loader.getContext().getContentResolver());
-
-                    }
+                if (body.indexOf(account) > 0 || body.indexOf(cardNumber) > 0 || account.equals(context.getString(R.string.account_number_default))) {
+                    smsLoadingService.loadSms(
+                            data.getString(data.getColumnIndex("body")),
+                            data.getInt(data.getColumnIndex("_id")),
+                            loader.getContext().getContentResolver());
                 }
             }
         }
